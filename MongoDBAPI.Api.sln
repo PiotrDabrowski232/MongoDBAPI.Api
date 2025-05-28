@@ -5,6 +5,8 @@ VisualStudioVersion = 17.13.35806.99 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoDBAPI.Api", "MongoDBAPI.Api\MongoDBAPI.Api.csproj", "{F9903C54-899F-401B-AD6F-B7B0B6F6228E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoDBAPI.Data", "MongoDBAPI.Data\MongoDBAPI.Data.csproj", "{5894BE62-CB20-4766-9C64-7D228BAD302A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{F9903C54-899F-401B-AD6F-B7B0B6F6228E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9903C54-899F-401B-AD6F-B7B0B6F6228E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9903C54-899F-401B-AD6F-B7B0B6F6228E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5894BE62-CB20-4766-9C64-7D228BAD302A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5894BE62-CB20-4766-9C64-7D228BAD302A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5894BE62-CB20-4766-9C64-7D228BAD302A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5894BE62-CB20-4766-9C64-7D228BAD302A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
