@@ -1,6 +1,16 @@
 ﻿@MongoDBAPI.Api_HostAddress = http://localhost:5057
 
-GET {{MongoDBAPI.Api_HostAddress}}/api/title/
+//Test kolekcji
+
+### Get all Titles
+GET {{MongoDBAPI.Api_HostAddress}}/api/title/GetTitles
 Accept: application/json
 
-###
+### Get all Names
+GET {{MongoDBAPI.Api_HostAddress}}/api/name/GetNames/
+Accept: application/json
+
+
+### Get all Ratings
+GET {{MongoDBAPI.Api_HostAddress}}/api/rating/GetRatings/
+Accept: application/json

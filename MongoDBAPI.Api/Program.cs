@@ -21,6 +21,8 @@ builder.Services.AddSingleton<IMongoClient>(s =>
 });
 
 builder.Services.AddScoped<ITitleService, TitleService>();
+builder.Services.AddScoped<INameService, NameService>();
+builder.Services.AddScoped<IRatingService, RatingService>();
 
 var app = builder.Build();
 

@@ -11,39 +11,30 @@ namespace MongoDBAPI.Data.Models
         public string Id { get; set; }
 
         [BsonElement("tconst")]
-        [BsonSerializer(typeof(FlexibleStringDeserializer))]
         public string TConst { get; set; }
 
         [BsonElement("titleType")]
-        [BsonSerializer(typeof(FlexibleStringDeserializer))]
         public string TitleType { get; set; }
 
         [BsonElement("primaryTitle")]
-        [BsonSerializer(typeof(FlexibleStringDeserializer))]
         public string PrimaryTitle { get; set; }
 
         [BsonElement("originalTitle")]
-        [BsonSerializer(typeof(FlexibleStringDeserializer))]
         public string OriginalTitle { get; set; }
 
         [BsonElement("isAdult")]
-        [BsonSerializer(typeof(FlexibleBooleanDeserializer))]
-        public bool IsAdult { get; set; }
+        public string IsAdult { get; set; }
 
         [BsonElement("startYear")]
-        [BsonSerializer(typeof(NullableInt32OrStringDeserializer))]
-        public int? StartYear { get; set; }
+        public string StartYear { get; set; }
 
         [BsonElement("endYear")]
-        [BsonSerializer(typeof(FlexibleStringDeserializer))]
         public string EndYear { get; set; }
 
         [BsonElement("runtimeMinutes")]
-        [BsonSerializer(typeof(NullableInt32OrStringDeserializer))]
-        public int? RuntimeMinutes { get; set; }
+        public string RuntimeMinutes { get; set; }
 
         [BsonElement("genres")]
-        [BsonSerializer(typeof(FlexibleStringDeserializer))]
         public string Genres { get; set; }
     }
 }

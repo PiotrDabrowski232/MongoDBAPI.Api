@@ -5,17 +5,17 @@ using MongoDBAPI.Data.Services.Interfaces;
 
 namespace MongoDBAPI.Data.Services
 {
-    public class TitleService : ITitleService
+    public class RatingService : IRatingService
     {
-        private readonly IMongoCollection<Title> _titles;
-        public TitleService(IConfiguration config, IMongoClient client)
+        private readonly IMongoCollection<Rating> _ratings;
+        public RatingService(IConfiguration config, IMongoClient client)
         {
             var database = client.GetDatabase(config["MongoDB:DatabaseName"]);
-            _titles = database.GetCollection<Title>("Title");
+            _ratings = database.GetCollection<Rating>("Rating");
         }
-        public async Task<List<Title>> GetTitles()
+        public async Task<List<Rating>> GetRatings()
         {
-            return await _titles.Find(_ => true)
+            return await _ratings.Find(_ => true)
                         .Limit(20)
                         .ToListAsync();
         }

@@ -2,8 +2,8 @@
 
 namespace MongoDBAPI.Data.Services.Interfaces
 {
-    public interface ITitleService
+    public interface INameService
     {
-        Task<List<Title>> GetTitles();
+        Task<List<Name>> GetNames();
     }
 }

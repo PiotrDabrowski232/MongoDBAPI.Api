@@ -16,7 +16,8 @@ namespace MongoDBAPI.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Title>>> Get()
+        [Route("GetTitles")]
+        public async Task<ActionResult<List<Title>>> GetAll()
         {
             var titles = await _titleService.GetTitles();
             return Ok(titles);
