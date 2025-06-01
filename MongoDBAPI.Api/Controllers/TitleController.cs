@@ -123,5 +123,62 @@ namespace MongoDBAPI.Api.Controllers
 
             return Ok(results);
         }
+
+        [HttpGet]
+        [Route("GetAverageRatingForTitle")]
+        public async Task<IActionResult> GetAverageRatingForTitle([FromQuery] string title, [FromQuery] int year, CancellationToken ct)
+        {
+            var result = await _titleService.GetAverageRatingForTitleAsync(title, year, ct);
+            if (result == null)
+                return NotFound($"No movie found with title '{title}' and year {year}.");
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("AddRatingArrayToBladeRunner")]
+        public async Task<IActionResult> AddRatingArrayToBladeRunner(CancellationToken ct)
+        {
+            var result = await _titleService.AddRatingArrayToBladeRunnerAsync(ct);
+            if (result.ModifiedCount == 0)
+                return NotFound("Blade Runner (1982) not found or already updated.");
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("AddCustomRatingToBladeRunner")]
+        public async Task<IActionResult> AddCustomRatingToBladeRunner(CancellationToken ct)
+        {
+            var result = await _titleService.AddCustomRatingToBladeRunnerAsync(ct);
+            if (result.ModifiedCount == 0)
+                return NotFound("Blade Runner (1982) not found or already updated.");
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("RemoveRatingFromBladeRunner")]
+        public async Task<IActionResult> RemoveRatingFromBladeRunner(CancellationToken ct)
+        {
+            var result = await _titleService.RemoveRatingFromBladeRunnerAsync(ct);
+            if (result.ModifiedCount == 0)
+                return NotFound("Blade Runner (1982) not found or rating field not present.");
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("UpsertAvgRatingForPanTadeusz")]
+        public async Task<IActionResult> UpsertAvgRatingForPanTadeusz(CancellationToken ct)
+        {
+            var result = await _titleService.UpsertAvgRatingForPanTadeuszAsync(ct);
+            return Ok(result);
+        }
+
+        [HttpDelete]
+        [Route("DeleteTitlesBefore1964")]
+        public async Task<IActionResult> DeleteTitlesBefore1964(CancellationToken ct)
+        {
+            var result = await _titleService.DeleteTitlesBefore1964Async(ct);
+            return Ok(new { DeletedCount = result.ModifiedCount, TimeMs = result.TimeMs });
+        }
+
     }
 }

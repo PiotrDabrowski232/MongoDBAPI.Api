@@ -22,6 +22,24 @@ namespace MongoDBAPI.Data.Services.Interfaces
         public Task<UpdateResultDto> SetMaxUsingAggregateWithIndexAsync();
         public Task<UpdateResultDto> SetMaxUsingFindAsync();
 
+        //Zadanie 8
+        public Task<TitleAverageRatingDto?> GetAverageRatingForTitleAsync(string title, int year, CancellationToken ct);
+
+        //Zadanie 9
+        Task<UpdateResultDto> AddRatingArrayToBladeRunnerAsync(CancellationToken ct);
+
+        //Zadanie10
+        Task<UpdateResultDto> AddCustomRatingToBladeRunnerAsync(CancellationToken ct);
+
+        // Zadanie 11
+        Task<UpdateResultDto> RemoveRatingFromBladeRunnerAsync(CancellationToken ct);
+
+        // Zadanie 12
+        Task<UpdateResultDto> UpsertAvgRatingForPanTadeuszAsync(CancellationToken ct);
+
+        // Zadanie 13
+        Task<UpdateResultDto> DeleteTitlesBefore1964Async(CancellationToken ct);
+
 
     }
 }

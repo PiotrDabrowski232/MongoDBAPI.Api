@@ -384,5 +384,181 @@ namespace MongoDBAPI.Data.Services
             };
         }
 
+        public async Task<TitleAverageRatingDto?> GetAverageRatingForTitleAsync(string title, int year, CancellationToken ct)
+        {
+            var pipeline = new[]
+            {
+        new BsonDocument("$addFields", new BsonDocument("startYearInt",
+            new BsonDocument("$convert", new BsonDocument
+            {
+                { "input", "$startYear" },
+                { "to", "int" },
+                { "onError", BsonNull.Value },
+                { "onNull", BsonNull.Value }
+            }))
+        ),
+        new BsonDocument("$match", new BsonDocument
+        {
+            { "primaryTitle", title },
+            { "startYearInt", year }
+        }),
+        new BsonDocument("$lookup", new BsonDocument
+        {
+            { "from", "Rating" },
+            { "localField", "tconst" },
+            { "foreignField", "tconst" },
+            { "as", "rating" }
+        }),
+        new BsonDocument("$unwind", new BsonDocument("path", "$rating")),
+        new BsonDocument("$project", new BsonDocument
+        {
+            { "_id", 0 },
+            { "primaryTitle", 1 },
+            { "startYear", "$startYearInt" },
+            { "averageRating", "$rating.averageRating" }
+        }),
+        new BsonDocument("$limit", 1)
+    };
+
+            var result = await _titles.Aggregate<BsonDocument>(pipeline).FirstOrDefaultAsync(ct);
+
+            if (result == null)
+                return null;
+
+            return new TitleAverageRatingDto
+            {
+                PrimaryTitle = result.GetValue("primaryTitle", "").AsString,
+                StartYear = result.GetValue("startYear", BsonNull.Value).IsBsonNull ? null : (int?)result["startYear"].AsInt32,
+                AverageRating = result.GetValue("averageRating", BsonNull.Value).IsBsonNull ? null : (double?)result["averageRating"].AsDouble
+            };
+        }
+
+        public async Task<UpdateResultDto> AddRatingArrayToBladeRunnerAsync(CancellationToken ct)
+        {
+            var sw = Stopwatch.StartNew();
+
+            var filter = Builders<Title>.Filter.And(
+                Builders<Title>.Filter.Eq("primaryTitle", "Blade Runner"),
+                Builders<Title>.Filter.Eq("startYear", "1982")
+            );
+
+            var bladeRunner = await _titles.Find(filter).FirstOrDefaultAsync(ct);
+            if (bladeRunner == null)
+            {
+                return new UpdateResultDto { ModifiedCount = 0, TimeMs = 0 };
+            }
+
+            var ratingFilter = Builders<Rating>.Filter.Eq(r => r.TConst, bladeRunner.TConst);
+            var ratings = await _ratings.Find(ratingFilter).ToListAsync(ct);
+
+            var ratingDocs = ratings.Select(r => new BsonDocument {
+                { "averageRating", r.AverageRating },
+                { "numVotes", r.NumVotes }
+            }).ToList();
+
+            var update = Builders<Title>.Update.Set("rating", new BsonArray(ratingDocs));
+            var result = await _titles.UpdateOneAsync(filter, update, cancellationToken: ct);
+
+            sw.Stop();
+            return new UpdateResultDto
+            {
+                ModifiedCount = (int)result.ModifiedCount,
+                TimeMs = sw.ElapsedMilliseconds
+            };
+        }
+
+        public async Task<UpdateResultDto> AddCustomRatingToBladeRunnerAsync(CancellationToken ct)
+        {
+            var sw = Stopwatch.StartNew();
+
+            var filter = Builders<Title>.Filter.And(
+                Builders<Title>.Filter.Eq("primaryTitle", "Blade Runner"),
+                Builders<Title>.Filter.Eq("startYear", "1982")
+            );
+
+            var newRating = new BsonDocument
+            {
+                { "averageRating", 10 },
+                { "numVotes", 10545 }
+            };
+
+
+            var update = Builders<Title>.Update.Push("rating", newRating);
+            var result = await _titles.UpdateOneAsync(filter, update, cancellationToken: ct);
+
+            sw.Stop();
+            return new UpdateResultDto
+            {
+                ModifiedCount = (int)result.ModifiedCount,
+                TimeMs = sw.ElapsedMilliseconds
+            };
+        }
+
+        public async Task<UpdateResultDto> RemoveRatingFromBladeRunnerAsync(CancellationToken ct)
+        {
+            var sw = Stopwatch.StartNew();
+
+            var filter = Builders<Title>.Filter.And(
+                Builders<Title>.Filter.Eq("primaryTitle", "Blade Runner"),
+                Builders<Title>.Filter.Eq("startYear", "1982")
+            );
+
+            var update = Builders<Title>.Update.Unset("rating");
+            var result = await _titles.UpdateOneAsync(filter, update, cancellationToken: ct);
+
+            sw.Stop();
+            return new UpdateResultDto
+            {
+                ModifiedCount = (int)result.ModifiedCount,
+                TimeMs = sw.ElapsedMilliseconds
+            };
+        }
+
+        public async Task<UpdateResultDto> UpsertAvgRatingForPanTadeuszAsync(CancellationToken ct)
+        {
+            var sw = Stopwatch.StartNew();
+
+            var filter = Builders<Title>.Filter.And(
+                Builders<Title>.Filter.Eq("primaryTitle", "Pan Tadeusz"),
+                Builders<Title>.Filter.Eq("startYear", "1999")
+            );
+
+            var update = Builders<Title>.Update.Set("avgRating", 9.1);
+
+            var result = await _titles.UpdateOneAsync(
+                filter,
+                update,
+                new UpdateOptions { IsUpsert = true },
+                cancellationToken: ct
+            );
+
+            sw.Stop();
+            return new UpdateResultDto
+            {
+                ModifiedCount = (int)result.ModifiedCount,
+                TimeMs = sw.ElapsedMilliseconds
+            };
+        }
+
+        public async Task<UpdateResultDto> DeleteTitlesBefore1964Async(CancellationToken ct)
+        {
+            var sw = Stopwatch.StartNew();
+
+            var filter = Builders<Title>.Filter.And(
+                Builders<Title>.Filter.Ne(t => t.StartYear, BsonNull.Value),
+                Builders<Title>.Filter.Lt("startYear", "1964")
+            );
+
+            var result = await _titles.DeleteManyAsync(filter, ct);
+
+            sw.Stop();
+            return new UpdateResultDto
+            {
+                ModifiedCount = (int)result.DeletedCount,
+                TimeMs = sw.ElapsedMilliseconds
+            };
+        }
+
+
     }
 }
