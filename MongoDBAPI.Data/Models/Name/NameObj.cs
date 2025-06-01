@@ -1,9 +1,9 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 
-namespace MongoDBAPI.Data.Models
+namespace MongoDBAPI.Data.Models.Name
 {
-    public class Name
+    public class NameObj
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -16,10 +16,10 @@ namespace MongoDBAPI.Data.Models
         public string PrimaryName { get; set; }
 
         [BsonElement("birthYear")]
-        public string BirthYear { get; set; }
+        public BsonValue BirthYear { get; set; }
 
         [BsonElement("deathYear")]
-        public string DeathYear { get; set; }
+        public BsonValue DeathYear { get; set; }
 
         [BsonElement("primaryProfession")]
         public string PrimaryProfession { get; set; }

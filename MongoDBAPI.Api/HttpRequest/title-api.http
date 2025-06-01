@@ -14,3 +14,31 @@ Accept: application/json
 ### Get all Ratings
 GET {{MongoDBAPI.Api_HostAddress}}/api/rating/GetRatings/
 Accept: application/json
+
+
+
+
+///Zadanie 1 Sprawdź liczbę dokumentów w kolekcjach Title/Rating/Name. 
+
+### Get count of Titles
+GET {{MongoDBAPI.Api_HostAddress}}/api/title/GetCount
+Accept: application/json
+
+### Get count of Names
+GET {{MongoDBAPI.Api_HostAddress}}/api/name/GetCount
+
+### Get count of Ratings
+GET {{MongoDBAPI.Api_HostAddress}}/api/rating/GetCount
+Accept: application/json
+
+
+///Zadanie 2 Wybierz 4 pierwsze dokumenty z kolekcji Title, które były wyprodukowane w roku 2010, 
+///są z kategorii filmów Drama, ich czas trwania jest większy niż 100 minut,
+///ale nie przekracza 120 minut. Zwracane dokumenty powinny zawierać tytuł, rok produkcji, 
+///kategorię oraz czas trwania. Dane uporządkuj rosnąco wg tytułu filmu. Sprawdź również,
+///ile dokumentów zwróciłoby zapytanie po wyłączeniu ograniczenia w postaci 4 pierwszych dokumentów. Wyszukując łańcuchy skorzystaj z operatora $regex.
+
+###Get filtered Titles
+GET {{MongoDBAPI.Api_HostAddress}}/api/title/GetFilteredTitles
+Accept: application/json
+////Przetestowane w postman

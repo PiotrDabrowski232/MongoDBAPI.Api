@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace MongoDBAPI.Data.Models
+namespace MongoDBAPI.Data.Models.Rating
 {
     public class Rating
     {

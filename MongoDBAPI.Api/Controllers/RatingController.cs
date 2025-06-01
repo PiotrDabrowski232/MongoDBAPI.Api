@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MongoDBAPI.Data.Models;
+using MongoDBAPI.Data.Models.Rating;
+using MongoDBAPI.Data.Services;
 using MongoDBAPI.Data.Services.Interfaces;
 
 namespace MongoDBAPI.Api.Controllers
@@ -21,6 +23,14 @@ namespace MongoDBAPI.Api.Controllers
         {
             var ratings = await _ratingService.GetRatings();
             return Ok(ratings);
+        }
+
+        [HttpGet]
+        [Route("GetCount")]
+        public async Task<ActionResult<List<CountResult>>> GetCount( CancellationToken ct)
+        {
+            var result = await _ratingService.RatingCount(ct);
+            return Ok(result);
         }
     }
 }

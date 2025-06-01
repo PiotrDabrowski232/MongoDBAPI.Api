@@ -1,8 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using MongoDBAPI.Data.Extensions;
 
-namespace MongoDBAPI.Data.Models
+namespace MongoDBAPI.Data.Models.Title
 {
     public class Title
     {
@@ -17,22 +16,22 @@ namespace MongoDBAPI.Data.Models
         public string TitleType { get; set; }
 
         [BsonElement("primaryTitle")]
-        public string PrimaryTitle { get; set; }
+        public BsonValue PrimaryTitle { get; set; }
 
         [BsonElement("originalTitle")]
-        public string OriginalTitle { get; set; }
+        public BsonValue OriginalTitle { get; set; }
 
         [BsonElement("isAdult")]
-        public string IsAdult { get; set; }
+        public int IsAdult { get; set; }  // Dane są Int32 w Mongo
 
         [BsonElement("startYear")]
-        public string StartYear { get; set; }
+        public BsonValue StartYear { get; set; }
 
         [BsonElement("endYear")]
-        public string EndYear { get; set; }
+        public BsonValue EndYear { get; set; }
 
         [BsonElement("runtimeMinutes")]
-        public string RuntimeMinutes { get; set; }
+        public BsonValue RuntimeMinutes { get; set; }
 
         [BsonElement("genres")]
         public string Genres { get; set; }
